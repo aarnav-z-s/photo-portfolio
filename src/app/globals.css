@@ -1,0 +1,371 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,wght@0,200;0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   CUSTOM PROPERTIES
+   ============================================================ */
+:root {
+  --bg: #070707;
+  --surface-1: #0e0e0e;
+  --surface-2: #161616;
+  --border: #1c1c1c;
+  --border-subtle: #111111;
+  --text-1: #eeeae3;
+  --text-2: #7a746e;
+  --text-3: #3d3835;
+  --accent: #bfa882;
+  --accent-dim: #7a6a54;
+  --accent-cool: #6b8cae;
+  --nav-height: 72px;
+  --grain-opacity: 0.035;
+  --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-medium: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font-dm-sans, 'DM Sans'), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Lenis smooth scroll */
+html.lenis {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+body {
+  background-color: var(--bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 2px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--text-3);
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-2);
+}
+
+/* ============================================================
+   SELECTION
+   ============================================================ */
+::selection {
+  background-color: var(--accent);
+  color: var(--bg);
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.font-display {
+  font-family: var(--font-cormorant, 'Cormorant Garamond'), Georgia, serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-cormorant, 'Cormorant Garamond'), Georgia, serif;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 0.9;
+  color: var(--text-1);
+}
+
+p {
+  font-family: var(--font-dm-sans, 'DM Sans'), system-ui, sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+
+/* ============================================================
+   FILM GRAIN OVERLAY
+   ============================================================ */
+.grain-overlay {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  animation: grain-anim 0.5s steps(2) infinite;
+  mix-blend-mode: overlay;
+}
+
+@keyframes grain-anim {
+  0%   { transform: translate(0%, 0%);   }
+  10%  { transform: translate(-2%, -3%); }
+  20%  { transform: translate(3%, 2%);   }
+  30%  { transform: translate(-1%, 4%);  }
+  40%  { transform: translate(2%, -2%);  }
+  50%  { transform: translate(-3%, 1%);  }
+  60%  { transform: translate(1%, -4%);  }
+  70%  { transform: translate(4%, 3%);   }
+  80%  { transform: translate(-2%, 2%);  }
+  90%  { transform: translate(3%, -1%);  }
+  100% { transform: translate(0%, 0%);   }
+}
+
+/* ============================================================
+   PHOTO PLACEHOLDER
+   ============================================================ */
+.photo-placeholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-placeholder::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(7, 7, 7, 0.6) 100%);
+  pointer-events: none;
+}
+
+/* ============================================================
+   IMAGE HOVER EFFECTS
+   ============================================================ */
+.img-hover-scale {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+.img-hover-scale:hover {
+  transform: scale(1.04);
+}
+
+/* ============================================================
+   CURSOR
+   ============================================================ */
+.cursor-crosshair * {
+  cursor: crosshair !important;
+}
+
+/* ============================================================
+   LAYOUT UTILITIES
+   ============================================================ */
+.section-padding {
+  padding-block: clamp(5rem, 12vw, 10rem);
+}
+
+.container-editorial {
+  max-width: 1400px;
+  margin-inline: auto;
+  padding-inline: clamp(1.5rem, 5vw, 5rem);
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+.nav-link {
+  font-family: var(--font-dm-sans, 'DM Sans'), system-ui, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-2);
+  transition: color var(--transition-fast);
+  text-decoration: none;
+}
+.nav-link:hover,
+.nav-link.active {
+  color: var(--text-1);
+}
+
+/* ============================================================
+   CAPTION / METADATA
+   ============================================================ */
+.caption-text {
+  font-family: var(--font-jetbrains, 'JetBrains Mono'), monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--text-2);
+  text-transform: uppercase;
+}
+
+.metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 2rem;
+}
+
+/* ============================================================
+   STORY MODE
+   ============================================================ */
+.story-progress-bar {
+  height: 1px;
+  background: var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.story-progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+.lightbox-overlay {
+  background: rgba(7, 7, 7, 0.97);
+  backdrop-filter: blur(4px);
+}
+
+/* ============================================================
+   SCROLL INDICATOR
+   ============================================================ */
+.scroll-line {
+  width: 1px;
+  background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+@keyframes scroll-pulse {
+  0%, 100% { opacity: 0.3; height: 48px; }
+  50% { opacity: 1; height: 64px; }
+}
+
+/* ============================================================
+   MASONRY GRID
+   ============================================================ */
+.masonry-grid {
+  columns: 2;
+  column-gap: 1.5rem;
+}
+.masonry-grid-item {
+  break-inside: avoid;
+  margin-bottom: 1.5rem;
+}
+@media (min-width: 768px) {
+  .masonry-grid { columns: 3; }
+}
+@media (min-width: 1280px) {
+  .masonry-grid { columns: 4; }
+}
+
+/* ============================================================
+   AUDIO VISUALIZER
+   ============================================================ */
+.audio-bar {
+  width: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+  animation: audio-wave 1s ease-in-out infinite;
+}
+@keyframes audio-wave {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+/* ============================================================
+   PAGE TRANSITIONS
+   ============================================================ */
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  transform-origin: bottom;
+  z-index: 9998;
+}
+
+/* ============================================================
+   UPLOAD ZONE
+   ============================================================ */
+.upload-zone {
+  border: 1px dashed var(--border);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+.upload-zone:hover,
+.upload-zone.active {
+  border-color: var(--accent);
+  background: rgba(191, 168, 130, 0.03);
+}
+
+/* ============================================================
+   ESSAY TYPOGRAPHY
+   ============================================================ */
+.essay-body {
+  font-family: var(--font-cormorant, 'Cormorant Garamond'), Georgia, serif;
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-1);
+  letter-spacing: 0.01em;
+}
+
+.essay-heading {
+  font-family: var(--font-dm-sans, 'DM Sans'), sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+/* ============================================================
+   HOVER CAPTION
+   ============================================================ */
+.hover-caption {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.group:hover .hover-caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   THREE.JS CANVAS
+   ============================================================ */
+.three-canvas-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
